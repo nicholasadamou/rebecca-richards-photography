@@ -6,7 +6,7 @@ This documentation covers the comprehensive OG image system implemented for Rebe
 
 The OG image system provides beautiful, branded social media preview images that match the site's aesthetic. The system uses a hybrid approach:
 
-1. **Static Images**: Pre-generated during build for common pages (homepage, about, services, contact)
+1. **Static Images**: The homepage uses a committed, art-directed image. About, services, and contact images are generated during build.
 2. **Dynamic Images**: Generated on-demand for unique content like individual album pages
 
 ## Design Features
@@ -21,10 +21,15 @@ The OG image system provides beautiful, branded social media preview images that
 ### Templates
 
 #### Homepage Template
-- Hero-style layout with gradient background
-- Large, elegant typography
-- Text shadow for readability
-- Brand mark in bottom right
+- Editorial split layout with an ivory panel and AI-assisted imagery based on `public/images/hero.jpg`
+- Prominent Rebecca Richards wordmark, serif headline, and restrained rose accents
+- Committed at `public/og/homepage.png`, also used as the README banner
+- The build validates its PNG format and 1200×630 dimensions and preserves its bytes
+
+To update the homepage card, replace this asset directly. `npm run og:generate`
+regenerates the other cards; it does not redraw the homepage. The dynamic
+`/api/og?type=homepage` endpoint remains a generic text template; the homepage
+metadata uses the committed static image.
 
 #### Album Template
 - Clean, minimal design with camera icon
@@ -84,7 +89,7 @@ GET /api/og?title=Custom%20Title&type=album&subtitle=Wedding%20Photography
 ```
 
 ### Build Process
-Static images are generated automatically during build:
+The homepage card is validated and the other static images are generated during build:
 ```bash
 npm run og:generate  # Generate static images
 npm run build        # Includes OG generation + site build

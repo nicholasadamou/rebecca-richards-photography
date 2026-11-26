@@ -3,6 +3,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { ImageResponse } from '@vercel/og'
 import React from 'react'
+import sharp from 'sharp'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -33,6 +34,12 @@ async function generateStaticOGImages() {
     // Ensure the public/og directory exists
     const ogDir = path.join(__dirname, '..', 'public', 'og')
     await fs.mkdir(ogDir, { recursive: true })
+
+    // The homepage is an art-directed asset, shared by social previews and the README.
+    const homepage = await sharp(path.join(ogDir, 'homepage.png')).metadata()
+    if (homepage.format !== 'png' || homepage.width !== 1200 || homepage.height !== 630) {
+      throw new Error('public/og/homepage.png must be a 1200×630 PNG')
+    }
 
     // Create inline OG generation function to avoid JSX issues
     const generateOGImage = async (options) => {
@@ -438,6 +445,10 @@ async function generateStaticOGImages() {
 
     // Generate each image
     for (const image of staticImages) {
+      if (image.filename === 'homepage.png') {
+        console.log('  ✅ Preserved art-directed homepage.png')
+        continue
+      }
       try {
         console.log(`  📸 Generating ${image.filename}...`)
         
