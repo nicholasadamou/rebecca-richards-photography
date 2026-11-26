@@ -9,6 +9,9 @@ on:
 permissions:
   contents: read
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -21,14 +24,18 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+      - uses: flox/install-flox-action@5bb9eaaffbeaa699a8251a1ae21ecf4c8e0e37d4
         with:
-          node-version: 24
-          cache: npm
-      - name: Install locked dependencies
-        run: npm ci
-      - name: Build the website and Open Graph images
-        run: npm run build
+          version: 1.18.2
+      - name: Check both packages in the locked Flox environment
+        run: |
+          flox activate -- bash -euc '
+            npm ci
+            npm --prefix sanity-studio ci
+            npm run build
+            npm run sanity:build
+            actionlint
+          '
       - name: Start the local site and Studio containers
         run: docker compose up --build -d --wait --wait-timeout 180
       - name: Build Sanity Studio in its container

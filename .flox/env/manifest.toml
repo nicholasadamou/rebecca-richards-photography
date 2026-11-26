@@ -1,0 +1,22 @@
+schema-version = "1.18.0"
+
+[install]
+nodejs.pkg-path = "nodejs"
+nodejs.version = "24"
+git.pkg-path = "git"
+actionlint.pkg-path = "actionlint"
+
+[services.site]
+command = '''
+  cd "$FLOX_ENV_PROJECT"
+  exec npm run dev -- --host 127.0.0.1 --port "${SITE_PORT:-4321}"
+'''
+
+[services.studio]
+command = '''
+  cd "$FLOX_ENV_PROJECT/sanity-studio"
+  exec ./node_modules/.bin/sanity dev --host 127.0.0.1 --port "${STUDIO_PORT:-3333}"
+'''
+
+[options]
+systems = ["aarch64-darwin", "x86_64-darwin", "aarch64-linux", "x86_64-linux"]

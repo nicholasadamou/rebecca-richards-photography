@@ -9,19 +9,29 @@ docker compose up --build --watch
 
 For native development, follow the steps below.
 
-Use Node.js 24 and npm. The committed `package-lock.json` supplies the dependency
-versions used by GitHub Actions.
+Install [Flox](https://flox.dev/docs/install-flox/) and activate the committed
+environment for Node.js 24, npm, Git, and actionlint. The Flox lockfile pins the
+toolchain for macOS and Linux on Intel and ARM; each package's `package-lock.json`
+pins its npm dependencies.
 
 ```sh
 git clone https://github.com/nicholasadamou/rebecca-richards-photography.git
 cd rebecca-richards-photography
+flox activate
 npm ci
-npm run dev
+npm --prefix sanity-studio ci
+flox services start
 ```
 
-Open the local URL printed by Astro, normally `http://localhost:4321`.
+Open the site at `http://localhost:4321` and Studio at `http://localhost:3333`.
 The portfolio includes the homepage, About Rebecca, services, contact details,
 client albums, and individual album galleries.
+
+Use `flox services status` to check both servers, `flox services logs` for their
+output, and `flox services stop` to stop them. If a port is occupied, export
+`SITE_PORT` or `STUDIO_PORT` before starting services. Stop existing services
+before changing their ports. You can also run `npm run dev` or
+`npm run sanity:dev` directly inside the activated shell.
 
 ## Content configuration
 
@@ -51,7 +61,7 @@ publishes a short-lived build artifact.
 
 ## Images and license
 
-The code uses the [MIT License](../LICENSE). Photography belongs to Rebecca
+The code uses the [PolyForm Shield License 1.0.0](../LICENSE). Photography belongs to Rebecca
 Richards Photography and is excluded from that license. Keep the photography
 notice with distributed copies and use images only with the appropriate rights.
 

@@ -8,7 +8,8 @@
 ![Sanity](https://img.shields.io/badge/Sanity-F43F5E?labelColor=111827&logoColor=FFFFFF&logo=sanity)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-F43F5E?labelColor=111827&logoColor=FFFFFF&logo=tailwindcss)
 ![Node.js](https://img.shields.io/badge/Node.js-F43F5E?labelColor=111827&logoColor=FFFFFF&logo=nodedotjs)
-[![License](https://img.shields.io/badge/License-MIT-F43F5E?labelColor=111827)](LICENSE)
+![Flox](https://img.shields.io/badge/Flox-F43F5E?labelColor=111827&logoColor=FFFFFF&logo=data:image/svg%2Bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNjAgMjYwIj48cGF0aCBkPSJNMjE1LjQ5OCAxNkgxMDAuMjczTDQ0IDczLjE2NjZWMTMwLjMzM0gxMDEuMTY2TDIxNS40OTggNzMuMTY2NlYxNlpNMTAxLjE2NyAxMzAuMzM0SDIxNS40OTlWMTg3LjUwMUgxMDEuMTY3VjEzMC4zMzRaTTQ0IDE4Ny41MTNIMTAxLjE2NlYyNDQuNjc5SDQ0VjE4Ny41MTNaIiBmaWxsPSIjRkZGRkZGIi8%2BPC9zdmc%2B)
+[![License](https://img.shields.io/badge/License-PolyForm_Shield-F43F5E?labelColor=111827)](LICENSE)
 
 Rebecca Richards’s wedding and portrait photography portfolio. Sanity supplies
 albums and images; Astro builds the pages, and React powers the galleries and
@@ -28,17 +29,22 @@ Both run locally with live reload; content stays in Sanity. Sign in to Studio
 with a Sanity account that can access the project.
 See [Docker setup](docs/docker.md) for configuration, CORS, and port overrides.
 
-For native development with Node.js 24:
+For native development with Flox (Node.js 24 and npm):
 
 ```sh
+flox activate
 npm ci
-npm run dev
+npm --prefix sanity-studio ci
+flox services start
 ```
+
+Flox manages the `site` and `studio` services. Use `flox services status`,
+`flox services logs`, and `flox services stop` from the activated shell.
 
 ## Documentation
 
 - [Docker setup](docs/docker.md): run the site and Studio together locally.
-- [Getting started](docs/getting-started.md): Node.js, local previews, and CMS configuration.
+- [Getting started](docs/getting-started.md): Flox, local previews, and CMS configuration.
 - [Local verification and development](docs/development.md): builds, scripts, screenshots, and project layout.
 - [Open Graph images](docs/OG-IMAGES.md): social cards and image generation.
 - [Search metadata](docs/SEO-IMPLEMENTATION.md): page metadata, structured data, and sitemaps.
@@ -46,9 +52,11 @@ npm run dev
 
 ## Local verification
 
-Use Node.js 24 and run `npm ci` followed by `npm run build`. GitHub Actions runs
-the same build on Ubuntu for pushes and pull requests, including Open Graph
-image generation, and retains the built site for seven days.
+Run `flox activate`, install both packages with `npm ci` and
+`npm --prefix sanity-studio ci`, then run `npm run build` and
+`npm run sanity:build`. GitHub Actions uses the same locked Flox environment on
+Ubuntu and also verifies both Docker containers. Successful runs retain the
+built site for seven days.
 
 See [development](docs/development.md) for additional checks and CMS tooling.
 
@@ -56,7 +64,7 @@ See [development](docs/development.md) for additional checks and CMS tooling.
 
 Copyright © 2025 Nicholas Adamou.
 
-The project is licensed under [MIT License](LICENSE).
+The project is licensed under [PolyForm Shield License 1.0.0](LICENSE).
 
-Photography belongs to Rebecca Richards Photography and is excluded from the MIT
+Photography belongs to Rebecca Richards Photography and is excluded from the software
 license. See the [photography notice](LICENSE).

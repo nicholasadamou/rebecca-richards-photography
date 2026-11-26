@@ -19,9 +19,10 @@ and port overrides. No editor API token is needed for Studio.
 
 ## Native development
 
-With Node.js 24 installed, run from the repository root:
+From the repository root, activate Flox for Node.js 24 and npm:
 
 ```sh
+flox activate
 npm --prefix sanity-studio ci
 npm run sanity:dev
 ```

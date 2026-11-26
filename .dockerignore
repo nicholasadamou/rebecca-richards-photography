@@ -1,4 +1,5 @@
 .git
+.flox
 .github
 **/node_modules
 **/dist

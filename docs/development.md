@@ -1,20 +1,38 @@
 # Development and local verification
 
-Use Node.js 24 and install the committed dependency graph with `npm ci`.
+Use `flox activate` for the locked Node.js 24 toolchain, then install both
+committed dependency graphs with `npm ci` and `npm --prefix sanity-studio ci`.
 Alternatively, [Docker Compose](docker.md) supplies the runtime and runs both
 the website and Sanity Studio with live reload.
 
 ## Shared CI build
 
 ```sh
+flox activate
 npm ci
+npm --prefix sanity-studio ci
 npm run build
+npm run sanity:build
+actionlint
 ```
 
-GitHub Actions runs these commands on standard GitHub-hosted Ubuntu runners for
-pushes to `master`, pull requests, and manual dispatches. The build generates
-Open Graph images before compiling the Astro website. Successful runs retain
-`dist/` as a `website` artifact for seven days.
+GitHub Actions runs these commands in the committed Flox environment on standard
+GitHub-hosted Ubuntu runners for pushes to `master`, pull requests, and manual
+dispatches. It then starts both Docker containers and builds Studio there too.
+The site build generates Open Graph images before compiling Astro. Successful
+runs retain `dist/` as a `website` artifact for seven days.
+
+## Flox services
+
+After installing both packages, run `flox services start` inside the activated
+shell to start `site` and `studio`. They bind to the loopback interface at ports
+4321 and 3333. Export `SITE_PORT` and `STUDIO_PORT` before starting services to
+override them. Run `flox services stop` before changing ports, and check
+`flox services status` or `flox services logs` when troubleshooting.
+
+Flox supplies the native toolchain; Docker still uses its pinned Node.js image.
+Install Docker separately for the container workflow. Flox activation does not
+install npm dependencies, deploy Studio, or modify content.
 
 ## Commands
 
