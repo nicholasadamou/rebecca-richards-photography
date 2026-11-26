@@ -1,7 +1,7 @@
 # Local development with Docker
 
 Docker Compose runs the Astro site and Sanity Studio together. You need Docker
-Desktop, or Docker Engine with Compose v2.32 or newer. Node.js and npm are
+Desktop, or Docker Engine with Compose v2.22 or newer. Node.js and npm are
 installed inside the images; you do not need them on the host.
 
 ## Start everything

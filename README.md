@@ -17,7 +17,7 @@ tool.
 
 ## Getting started
 
-With Docker and Compose v2.32 or newer installed:
+With Docker and Compose v2.22 or newer installed:
 
 ```sh
 docker compose up --build --watch
