@@ -22,7 +22,7 @@ The OG image system provides beautiful, branded social media preview images that
 
 #### Homepage Template
 - Editorial split layout with an ivory panel and AI-assisted imagery based on `public/images/hero.jpg`
-- Prominent Rebecca Richards wordmark, serif headline, and restrained rose accents
+- Existing rose RR logo, prominent Rebecca Richards wordmark, serif headline, and restrained rose accents
 - Committed at `public/og/homepage.png`, also used as the README banner
 - The build validates its PNG format and 1200×630 dimensions and preserves its bytes
 

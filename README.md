@@ -42,8 +42,7 @@ See [development](docs/development.md) for additional checks and CMS tooling.
 
 Copyright © 2025 Nicholas Adamou.
 
-The project is licensed under [MIT License](LICENSE), with Nicholas Adamou as
-the holder.
+The project is licensed under [MIT License](LICENSE).
 
 Photography belongs to Rebecca Richards Photography and is excluded from the MIT
 license. See the [photography notice](LICENSE).
