@@ -79,8 +79,9 @@ docker compose ps
 docker compose logs site studio
 ```
 
-Each service has an HTTP health check. To start in the background and wait for
-both servers:
+Each service has an HTTP health check. The site probe reads a static icon, so
+health checks do not repeatedly query Sanity. To start in the background and
+wait for both servers:
 
 ```sh
 docker compose up --build -d --wait --wait-timeout 180
