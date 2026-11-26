@@ -1,0 +1,71 @@
+{
+  "name": "Rebecca Richards Photography - Wedding Photographer in Doylestown, PA",
+  "short_name": "Rebecca Richards Photo",
+  "description": "Professional wedding photography in Doylestown, PA. Capturing authentic, timeless moments for your special day.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "minimal-ui",
+  "orientation": "portrait-primary",
+  "theme_color": "#fb7185",
+  "background_color": "#ffffff",
+  "categories": ["photography", "wedding", "business"],
+  "lang": "en-US",
+  "icons": [
+    {
+      "src": "/icons/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/images/hero.jpg",
+      "sizes": "1200x800",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Homepage hero section"
+    },
+    {
+      "src": "/images/about.jpg",
+      "sizes": "600x800",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "About Rebecca Richards"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "View Client Albums",
+      "short_name": "Albums",
+      "description": "Browse wedding photography albums",
+      "url": "/client-albums",
+      "icons": [{ "src": "/icons/favicon-32x32.png", "sizes": "32x32" }]
+    },
+    {
+      "name": "Contact Rebecca",
+      "short_name": "Contact", 
+      "description": "Get in touch for wedding photography",
+      "url": "/contact",
+      "icons": [{ "src": "/icons/favicon-32x32.png", "sizes": "32x32" }]
+    },
+    {
+      "name": "Photography Services",
+      "short_name": "Services",
+      "description": "Wedding and engagement photography services", 
+      "url": "/services",
+      "icons": [{ "src": "/icons/favicon-32x32.png", "sizes": "32x32" }]
+    }
+  ]
+}

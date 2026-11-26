@@ -1,0 +1,35 @@
+{
+  "generatedAt": "2025-09-22T16:45:55.219Z",
+  "images": [
+    {
+      "filename": "homepage.png",
+      "url": "/og/homepage.png",
+      "type": "homepage",
+      "title": "Capturing Love Stories"
+    },
+    {
+      "filename": "about.png",
+      "url": "/og/about.png",
+      "type": "about",
+      "title": "About Rebecca"
+    },
+    {
+      "filename": "services.png",
+      "url": "/og/services.png",
+      "type": "service",
+      "title": "Photography Services"
+    },
+    {
+      "filename": "contact.png",
+      "url": "/og/contact.png",
+      "type": "contact",
+      "title": "Get in Touch"
+    },
+    {
+      "filename": "default-album.png",
+      "url": "/og/default-album.png",
+      "type": "album",
+      "title": "Wedding Album"
+    }
+  ]
+}

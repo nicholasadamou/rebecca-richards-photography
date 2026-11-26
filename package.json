@@ -1,0 +1,52 @@
+{
+  "name": "rebecca-richards-photography",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "npm run og:generate && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "og:generate": "node scripts/generate-og-images.js",
+    "sanity:dev": "npm --prefix sanity-studio run dev",
+    "sanity:build": "npm --prefix sanity-studio run build",
+    "sanity:deploy": "npm --prefix sanity-studio run deploy",
+    "lint": "eslint . --ext .js,.mjs,.cjs,.ts,.astro",
+    "lint:fix": "eslint . --ext .js,.mjs,.cjs,.ts,.astro --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test:sanity": "node scripts/test-sanity-connection.js",
+    "migrate:sanity": "node scripts/migrate-to-sanity.js"
+  },
+  "dependencies": {
+    "@astrojs/react": "^4.3.1",
+    "@astrojs/sitemap": "^3.6.0",
+    "@sanity/cli": "^4.9.0",
+    "@sanity/client": "^7.11.2",
+    "@sanity/image-url": "^1.2.0",
+    "@tailwindcss/vite": "^4.1.13",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@vercel/og": "^0.8.5",
+    "astro": "^5.13.9",
+    "canvas-confetti": "^1.9.3",
+    "dotenv": "^17.2.2",
+    "framer-motion": "^12.23.16",
+    "lucide-astro": "^0.544.0",
+    "react-dom": "^19.1.1",
+    "sanity": "^4.9.0",
+    "sharp": "^0.34.4",
+    "tailwindcss": "^4.1.13"
+  },
+  "devDependencies": {
+    "@types/canvas-confetti": "^1.9.0",
+    "@typescript-eslint/parser": "^8.44.0",
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-astro": "^1.3.1",
+    "prettier": "^3.6.2",
+    "prettier-plugin-astro": "^0.14.1",
+    "react": "^19.1.1",
+    "typescript": "^5.9.2"
+  }
+}

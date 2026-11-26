@@ -1,0 +1,360 @@
+---
+import Layout from '../layouts/Layout.astro'
+import { Image } from 'astro:assets'
+import { Camera, Heart, Star } from 'lucide-astro'
+import { getAllAlbums, urlFor } from '../lib/sanity.ts'
+import PageTransition from '../components/PageTransition.tsx'
+import ScrollAnimation from '../components/ScrollAnimation.tsx'
+import AnimatedContainer from '../components/AnimatedContainer.tsx'
+
+// Import local images
+import aboutImage from '../assets/about.jpg'
+
+// Load albums from Sanity CMS
+let albums = []
+
+try {
+  // Get all published albums from Sanity, limit to 6 for the homepage
+  const allAlbums = await getAllAlbums()
+  albums = allAlbums.slice(0, 6)
+} catch (error) {
+  console.error('Error loading albums from Sanity:', error)
+  albums = []
+}
+
+// Helper function to get cover image URL from Sanity
+function getAlbumCoverImage(album: any): string | null {
+  if (album.coverImage) {
+    return urlFor(album.coverImage)
+      .width(600)
+      .height(600)
+      .fit('crop')
+      .auto('format')
+      .url()
+  }
+  return null
+}
+
+// Helper function to format date from Sanity
+function formatDate(dateString: string | null | undefined): string {
+  if (!dateString) return ''
+
+  try {
+    const date = new Date(dateString)
+    if (!isNaN(date.getTime())) {
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    }
+  } catch {}
+
+  return ''
+}
+
+// Helper function to get human-readable album type
+function getAlbumTypeLabel(albumType: string): string {
+  const typeMap: Record<string, string> = {
+    'wedding': 'Wedding Photography',
+    'engagement': 'Engagement Session',
+    'bridal': 'Bridal Session',
+    'family': 'Family Portrait',
+    'maternity': 'Maternity Session',
+    'event': 'Special Event',
+    'graduation': 'Graduation',
+    'portrait': 'Portrait Session'
+  }
+  return typeMap[albumType] || 'Portrait Session'
+}
+---
+
+<Layout 
+  title="Rebecca Richards Photography - Wedding Photographer in Doylestown, PA"
+  description="Professional wedding photographer in Doylestown, PA specializing in authentic, timeless moments. Capturing love stories throughout Pennsylvania, New Jersey, and Delaware."
+  pageType="homepage"
+>
+  <PageTransition client:load>
+    <!-- Hero Section -->
+  <section class="relative h-[70vh] min-h-[600px] flex items-center justify-center overflow-hidden">
+    <!-- Background Image -->
+    <div
+      class="absolute inset-0 bg-cover bg-center bg-no-repeat bg-gradient-to-br from-rose-200 via-rose-300 to-gray-300"
+      style="background-image: url('/images/hero.jpg')"
+    >
+    </div>
+    <!-- Dark Overlay for Better Text Readability -->
+    <div class="absolute inset-0 bg-black/30"></div>
+
+    <!-- Hero Content -->
+    <div class="relative z-20 text-center max-w-4xl mx-auto px-4">
+      <AnimatedContainer client:load animation="fadeIn" delay={0.5}>
+        <h1
+          class="text-5xl md:text-7xl font-light text-white mb-6 tracking-wide"
+          style="text-shadow: 2px 2px 4px rgba(0,0,0,0.8)"
+        >
+          Capturing Love Stories
+        </h1>
+      </AnimatedContainer>
+
+      <AnimatedContainer client:load animation="slideUp" delay={0.8}>
+        <p
+          class="text-xl md:text-2xl text-white mb-8 font-light leading-relaxed"
+          style="text-shadow: 1px 1px 3px rgba(0,0,0,0.7)"
+        >
+          Pennsylvania Wedding Photographer specializing in authentic, timeless moments
+        </p>
+      </AnimatedContainer>
+
+      <AnimatedContainer client:load animation="slideUp" delay={1.1}>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="/client-albums"
+            class="bg-white text-gray-900 px-8 py-4 rounded-sm hover:bg-gray-100 transition-all duration-200 font-light tracking-wide shadow-lg hover-lift"
+          >
+            View Client Albums
+          </a>
+          <a
+            href="/contact"
+            class="border-2 border-white text-white px-8 py-4 rounded-sm hover:bg-white hover:text-gray-900 transition-all duration-200 font-light tracking-wide hover-scale"
+          >
+            Book Consultation
+          </a>
+        </div>
+      </AnimatedContainer>
+    </div>
+  </section>
+
+  <!-- Introduction Section -->
+  <section class="py-20 bg-white">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <!-- Rebecca's Image -->
+        <ScrollAnimation client:load animation="slideRight" className="order-2 lg:order-1">
+          <div class="relative">
+            <Image
+              src={aboutImage}
+              alt="Rebecca Richards - Wedding Photographer"
+              class="w-full rounded-sm shadow-lg hover-lift"
+              width={600}
+              height={800}
+              loading="eager"
+            />
+          </div>
+        </ScrollAnimation>
+
+        <!-- Content -->
+        <div class="order-1 lg:order-2 text-center lg:text-left">
+          <ScrollAnimation client:load animation="fadeIn">
+            <h2 class="text-4xl md:text-5xl font-light text-gray-900 mb-8 tracking-wide">
+              Hi, I'm Rebecca
+            </h2>
+          </ScrollAnimation>
+
+          <ScrollAnimation client:load animation="slideUp" delay={0.2}>
+            <p class="text-lg md:text-xl text-gray-600 leading-relaxed mb-8 font-light">
+              I believe every love story deserves to be beautifully preserved. As a wedding
+              photographer based in Doylestown, PA, I specialize in capturing authentic, joyful
+              moments that reflect your unique connection.
+            </p>
+            <p class="text-lg md:text-xl text-gray-600 leading-relaxed mb-12 font-light">
+              With a background in marketing and a passion for visual storytelling, I approach each
+              wedding with both creative vision and professional expertise.
+            </p>
+          </ScrollAnimation>
+
+          <ScrollAnimation client:load animation="slideUp" delay={0.4}>
+            <a
+              href="/about"
+              class="inline-flex items-center text-rose-400 hover:text-rose-500 transition-colors duration-200 font-light tracking-wide hover-scale"
+            >
+              Learn More About Me
+              <span class="ml-2">→</span>
+            </a>
+          </ScrollAnimation>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Work Section -->
+  <section class="py-20 bg-gray-50">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation client:load animation="fadeIn" className="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-light text-gray-900 mb-8 tracking-wide">
+          Recent Work
+        </h2>
+        <p class="text-lg text-gray-600 font-light max-w-2xl mx-auto">
+          A glimpse into the beautiful moments I've had the honor to capture
+        </p>
+      </ScrollAnimation>
+
+      <!-- Portfolio Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {
+          albums.length > 0 ? (
+            albums.map((album, index) => {
+              const coverImage = getAlbumCoverImage(album)
+              const albumTypeLabel = getAlbumTypeLabel(album.albumType)
+              const formattedDate = formatDate(album.date)
+              const albumUrl = `/albums/${album.slug.current}`
+
+              return (
+                <div
+                  class="recent-work-item"
+                  style={`animation-delay: ${0.3 + (index * 0.15)}s`}
+                >
+                  <a href={albumUrl} class="group cursor-pointer block">
+                    <div class="aspect-square rounded-sm overflow-hidden mb-4 relative">
+                      {coverImage ? (
+                        <!-- eslint-disable-next-line @typescript-eslint/prefer-astro-image -->
+                        <img
+                          src={coverImage}
+                          alt={`${album.title} - Wedding photography by Rebecca Richards`}
+                          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          loading="lazy"
+                          decoding="async"
+                          width="600"
+                          height="600"
+                          style="aspect-ratio: 1/1;"
+                        />
+                      ) : (
+                        <div class="w-full h-full bg-gray-200 flex items-center justify-center">
+                          <Heart size={48} class="text-gray-400" />
+                        </div>
+                      )}
+                      <div
+                        class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200"
+                      >
+                      </div>
+                    </div>
+                    <h3 class="text-lg font-light text-gray-900 mb-2">{album.title}</h3>
+                    <p class="text-gray-600 font-light">{albumTypeLabel}{formattedDate && ` • ${formattedDate}`}</p>
+                  </a>
+                </div>
+              )
+            })
+          ) : (
+            <!-- Placeholder when no albums are loaded -->
+            <div class="col-span-full text-center py-12">
+              <div class="w-24 h-24 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <Heart size={48} class="text-rose-400" />
+              </div>
+              <h3 class="text-xl font-light text-gray-600 mb-2">Recent Work Coming Soon</h3>
+              <p class="text-gray-500 font-light mb-8">
+                New client galleries are being added regularly. Check back soon to see the latest work!
+              </p>
+              <a
+                href="/client-albums"
+                class="inline-block bg-rose-400 hover:bg-rose-500 text-white px-6 py-3 rounded-sm transition-colors duration-200 font-light tracking-wide"
+              >
+                View All Albums
+              </a>
+            </div>
+          )
+        }
+      </div>
+
+      <ScrollAnimation client:load animation="slideUp" delay={0.2} className="text-center mt-12">
+        <a
+          href="/client-albums"
+          class="bg-rose-400 hover:bg-rose-500 text-white px-8 py-4 rounded-sm transition-colors duration-200 font-light tracking-wide hover-lift"
+        >
+          View All Albums
+        </a>
+      </ScrollAnimation>
+    </div>
+  </section>
+
+  <!-- Services Preview -->
+  <section class="py-20 bg-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation client:load animation="fadeIn" className="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-light text-gray-900 mb-8 tracking-wide">
+          What I Offer
+        </h2>
+        <p class="text-lg text-gray-600 font-light max-w-2xl mx-auto">
+          Comprehensive photography services for your most important moments
+        </p>
+      </ScrollAnimation>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <!-- Service 1 -->
+        <ScrollAnimation client:load animation="slideUp" delay={0} className="text-center">
+          <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-6 hover-scale">
+            <Heart size={32} class="text-rose-400" />
+          </div>
+          <h3 class="text-xl font-light text-gray-900 mb-4 tracking-wide">Wedding Photography</h3>
+          <p class="text-gray-600 font-light leading-relaxed">
+            Full-day coverage capturing every precious moment of your special day, from getting
+            ready to the final dance.
+          </p>
+        </ScrollAnimation>
+
+        <!-- Service 2 -->
+        <ScrollAnimation client:load animation="slideUp" delay={0.2} className="text-center">
+          <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-6 hover-scale">
+            <Camera size={32} class="text-rose-400" />
+          </div>
+          <h3 class="text-xl font-light text-gray-900 mb-4 tracking-wide">Engagement Sessions</h3>
+          <p class="text-gray-600 font-light leading-relaxed">
+            Intimate portrait sessions to celebrate your engagement and create beautiful images for
+            save-the-dates.
+          </p>
+        </ScrollAnimation>
+
+        <!-- Service 3 -->
+        <ScrollAnimation client:load animation="slideUp" delay={0.4} className="text-center">
+          <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-6 hover-scale">
+            <Star size={32} class="text-rose-400" />
+          </div>
+          <h3 class="text-xl font-light text-gray-900 mb-4 tracking-wide">Special Events</h3>
+          <p class="text-gray-600 font-light leading-relaxed">
+            Professional photography for anniversaries, family celebrations, and other meaningful
+            milestones.
+          </p>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="py-20 bg-rose-50">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+      <ScrollAnimation client:load animation="fadeIn">
+        <h2 class="text-4xl md:text-5xl font-light text-gray-900 mb-8 tracking-wide">
+          Let's Create Something Beautiful
+        </h2>
+        <p class="text-lg md:text-xl text-gray-600 leading-relaxed mb-12 font-light">
+          I'd love to hear about your vision and discuss how we can bring your love story to life
+          through photography.
+        </p>
+      </ScrollAnimation>
+
+      <ScrollAnimation client:load animation="slideUp" delay={0.2}>
+        <a
+          href="/contact"
+          class="bg-rose-400 hover:bg-rose-500 text-white px-10 py-4 rounded-sm transition-colors duration-200 font-light tracking-wide text-lg hover-lift"
+        >
+          Get in Touch
+        </a>
+      </ScrollAnimation>
+    </div>
+  </section>
+  </PageTransition>
+
+  <style>
+    .recent-work-item {
+      opacity: 0;
+      transform: translateY(50px) scale(0.95);
+      animation: slideUpFadeIn 0.6s ease-out forwards;
+    }
+
+    @keyframes slideUpFadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
+</Layout>

@@ -1,0 +1,560 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import { Heart, ArrowLeft, MapPin, Calendar, Users } from 'lucide-astro'
+import { getAlbumBySlug, getAllAlbumSlugs, urlFor } from '../../lib/sanity.ts'
+import PageTransition from '../../components/PageTransition.tsx'
+import ScrollAnimation from '../../components/ScrollAnimation.tsx'
+import AnimatedContainer from '../../components/AnimatedContainer.tsx'
+
+// Static path generation for all album slugs
+export async function getStaticPaths() {
+  const slugs = await getAllAlbumSlugs()
+
+  return slugs.map((slug) => ({
+    params: { slug },
+  }))
+}
+
+// Get the album data for this slug
+const { slug } = Astro.params
+const album = await getAlbumBySlug(slug)
+
+// Redirect to 404 if album not found
+if (!album) {
+  return Astro.redirect('/404')
+}
+
+// Helper functions
+function formatDate(dateString: string | null | undefined): string {
+  if (!dateString) return ''
+
+  try {
+    const date = new Date(dateString)
+    if (!isNaN(date.getTime())) {
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    }
+  } catch {}
+
+  return dateString
+}
+
+function getAlbumTypeDisplay(albumType: string): string {
+  const types: Record<string, string> = {
+    wedding: 'Wedding Photography',
+    engagement: 'Engagement Session',
+    bridal: 'Bridal Session',
+    family: 'Family Portrait',
+    maternity: 'Maternity Session',
+    event: 'Special Event',
+    graduation: 'Graduation',
+    portrait: 'Portrait Session'
+  }
+  return types[albumType] || 'Portrait Session'
+}
+
+function getImageUrl(image: any, width: number = 800, height: number = 600): string | null {
+  if (!image || !image.asset) return null
+  return urlFor(image.asset).width(width).height(height).fit('crop').format('webp').url()
+}
+
+function getThumbnailUrl(image: any): string | null {
+  if (!image || !image.asset) return null
+  return urlFor(image.asset).width(300).height(200).fit('crop').format('webp').url()
+}
+
+const formattedDate = formatDate(album.date)
+const albumTypeDisplay = getAlbumTypeDisplay(album.albumType)
+const coverImageUrl = getImageUrl(album.coverImage, 1200, 600)
+---
+
+<Layout
+  title={`${album.title} - Rebecca Richards Photography`}
+  description={album.description || `Beautiful ${albumTypeDisplay.toLowerCase()} photos captured by Rebecca Richards Photography.`}
+  pageType="album"
+  customOGData={{
+    albumTitle: album.title,
+    albumDate: formattedDate,
+    albumType: albumTypeDisplay,
+  }}
+>
+  <PageTransition client:load>
+    <!-- Back Navigation -->
+    <div class="bg-white border-b border-gray-100">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
+        <AnimatedContainer client:load animation="fadeIn">
+          <a
+            href="/client-albums"
+            class="inline-flex items-center text-gray-600 hover:text-gray-900 transition-colors duration-200 hover-scale"
+          >
+            <ArrowLeft size={20} class="mr-2" />
+            Back to Albums
+          </a>
+        </AnimatedContainer>
+      </div>
+    </div>
+
+    <!-- Album Header -->
+    <section class="py-12 bg-white">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+          <AnimatedContainer client:load animation="fadeIn" delay={0.2}>
+            <h1 class="text-4xl md:text-5xl font-light text-gray-900 mb-4 tracking-wide">
+              {album.title}
+            </h1>
+            <p class="text-xl text-gray-600 font-light mb-6">{albumTypeDisplay}</p>
+          </AnimatedContainer>
+
+          <!-- Album Meta Info -->
+          <AnimatedContainer client:load animation="slideUp" delay={0.4}>
+            <div class="flex flex-wrap justify-center gap-6 text-gray-500 mb-6">
+              {formattedDate && (
+                <div class="flex items-center">
+                  <Calendar size={18} class="mr-2" />
+                  <span>{formattedDate}</span>
+                </div>
+              )}
+
+              {album.sessionLocation && (
+                <div class="flex items-center">
+                  <MapPin size={18} class="mr-2" />
+                  <span>{album.sessionLocation}</span>
+                </div>
+              )}
+
+              {album.images && album.images.length > 0 && (
+                <div class="flex items-center">
+                  <Heart size={18} class="mr-2" />
+                  <span>{album.images.length} photos</span>
+                </div>
+              )}
+            </div>
+
+            {album.description && (
+              <p class="text-lg text-gray-600 font-light leading-relaxed max-w-3xl mx-auto">
+                {album.description}
+              </p>
+            )}
+          </AnimatedContainer>
+        </div>
+    </div>
+  </section>
+
+  <!-- Album Gallery -->
+  <section class="py-12 bg-gray-50">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {album.images && album.images.length > 0 ? (
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {album.images.map((image, index) => {
+            const imageUrl = getImageUrl(image, 1200, 800)
+            const thumbnailUrl = getThumbnailUrl(image)
+
+            return (
+              <div
+                class="album-photo-item group cursor-pointer"
+                onclick={`openLightbox(${index})`}
+                style={`animation-delay: ${0.1 + (index * 0.08)}s`}
+              >
+                <div class="aspect-[4/3] overflow-hidden rounded-sm shadow-sm bg-gray-200">
+                  {thumbnailUrl && (
+                    <!-- eslint-disable-next-line @typescript-eslint/prefer-astro-image -->
+                    <img
+                      src={thumbnailUrl}
+                      alt={image.alt || `Photo ${index + 1} from ${album.title}`}
+                      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
+                    />
+                  )}
+                </div>
+              </div>
+            )
+          })}
+        </div>
+      ) : (
+        <div class="text-center py-12">
+          <Heart size={64} class="mx-auto text-gray-300 mb-4" />
+          <h3 class="text-xl font-light text-gray-600 mb-2">No photos available</h3>
+          <p class="text-gray-500 font-light">
+            Photos for this album are being processed. Please check back soon!
+          </p>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- Modern Lightbox Modal -->
+  <div id="lightbox" class="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 hidden opacity-0 transition-all duration-300 ease-out">
+    <!-- Background overlay -->
+    <div class="absolute inset-0" onclick="closeLightbox()"></div>
+
+    <!-- Main container -->
+    <div class="relative h-full flex flex-col">
+      <!-- Header bar -->
+      <div class="flex items-center justify-between p-4 text-white">
+        <div class="flex items-center space-x-4">
+          <h3 class="text-lg font-light tracking-wide">{album.title}</h3>
+          <span id="image-counter" class="text-sm text-gray-300"></span>
+        </div>
+
+        <!-- Close button -->
+        <button
+          onclick="closeLightbox()"
+          class="p-2 rounded-full hover:bg-white/10 transition-colors duration-200 group cursor-pointer"
+          aria-label="Close lightbox"
+        >
+          <svg class="w-6 h-6 group-hover:rotate-90 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Image container -->
+      <div class="flex-1 flex items-center justify-center relative px-4 pb-20">
+        <!-- Previous button -->
+        <button
+          onclick="prevImage()"
+          class="absolute cursor-pointer left-4 z-10 p-3 rounded-full bg-black/30 hover:bg-black/50 text-white backdrop-blur-sm transition-all duration-200 hover:scale-110 group"
+          aria-label="Previous image"
+        >
+          <svg class="w-6 h-6 group-hover:-translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+
+        <!-- Image -->
+        <div class="relative max-w-6xl max-h-full">
+          <img
+            id="lightbox-image"
+            src=""
+            alt=""
+            class="max-w-full max-h-full object-contain rounded-sm shadow-2xl transition-all duration-300 ease-out transform"
+          />
+
+          <!-- Loading spinner -->
+          <div id="image-loader" class="absolute inset-0 flex items-center justify-center bg-black/20 rounded-sm hidden">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+          </div>
+        </div>
+
+        <!-- Next button -->
+        <button
+          onclick="nextImage()"
+          class="absolute cursor-pointer right-4 z-10 p-3 rounded-full bg-black/30 hover:bg-black/50 text-white backdrop-blur-sm transition-all duration-200 hover:scale-110 group"
+          aria-label="Next image"
+        >
+          <svg class="w-6 h-6 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Bottom bar with thumbnails -->
+      <div class="absolute bottom-0 left-0 right-0 p-4">
+        <div class="flex justify-center">
+          <div id="thumbnail-strip" class="flex space-x-2 overflow-x-auto pb-2 max-w-full">
+            <!-- Thumbnails will be populated by JavaScript -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Call to Action -->
+    <section class="py-20 bg-white">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+        <ScrollAnimation client:load animation="fadeIn">
+          <h2 class="text-4xl md:text-5xl font-light text-gray-900 mb-8 tracking-wide">
+            Love What You See?
+          </h2>
+          <p class="text-lg md:text-xl text-gray-600 leading-relaxed mb-12 font-light">
+            Let's create beautiful memories together for your special day.
+          </p>
+        </ScrollAnimation>
+
+        <ScrollAnimation client:load animation="slideUp" delay={0.2}>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="/contact"
+              class="bg-rose-400 hover:bg-rose-500 text-white px-8 py-4 rounded-sm transition-colors duration-200 font-light tracking-wide hover-lift"
+            >
+              Book Your Session
+            </a>
+            <a
+              href="/client-albums"
+              class="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-sm hover:border-gray-400 transition-colors duration-200 font-light tracking-wide hover-scale"
+            >
+              View More Albums
+            </a>
+          </div>
+        </ScrollAnimation>
+      </div>
+    </section>
+  </PageTransition>
+
+  <script define:vars={{ album, projectId: import.meta.env.PUBLIC_SANITY_PROJECT_ID || 'gwf79bj6' }}>
+    let currentImageIndex = 0
+    let isAnimating = false
+
+    // Prepare image URLs for lightbox and thumbnails
+    const imageUrls = (album.images || []).map(image => {
+      if (!image.asset) return null
+
+      const baseUrl = `https://cdn.sanity.io/images/${projectId}/production/`
+      const assetId = image.asset._ref || image.asset._id
+      if (!assetId) return null
+
+      const match = assetId.match(/^image-(.+)-(\d+x\d+)-(\w+)$/)
+      if (!match) return null
+
+      const [, imageId, dimensions, format] = match
+      return {
+        full: `${baseUrl}${imageId}-${dimensions}.${format}?w=1400&h=1000&fit=crop&fm=webp&q=85`,
+        thumb: `${baseUrl}${imageId}-${dimensions}.${format}?w=80&h=60&fit=crop&fm=webp&q=80`
+      }
+    }).filter(Boolean)
+
+    // Create thumbnail strip
+    function createThumbnailStrip() {
+      const thumbnailStrip = document.getElementById('thumbnail-strip')
+      if (!thumbnailStrip) return
+
+      thumbnailStrip.innerHTML = imageUrls.map((urls, index) => `
+        <button
+          onclick="navigateToImage(${index})"
+          class="thumbnail-btn cursor-pointer flex-shrink-0 w-16 h-12 rounded overflow-hidden border-2 transition-all duration-200 ${
+            index === currentImageIndex ? 'border-white shadow-lg' : 'border-transparent hover:border-white/50'
+          }"
+          data-index="${index}"
+        >
+          <img src="${urls.thumb}" alt="Thumbnail ${index + 1}" class="w-full h-full object-cover" />
+        </button>
+      `).join('')
+    }
+
+    // Update thumbnail active state
+    function updateThumbnailsActive() {
+      const thumbnails = document.querySelectorAll('.thumbnail-btn')
+      thumbnails.forEach((thumb, index) => {
+        if (index === currentImageIndex) {
+          thumb.classList.add('border-white', 'shadow-lg')
+          thumb.classList.remove('border-transparent')
+          // Scroll thumbnail into view
+          thumb.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+        } else {
+          thumb.classList.remove('border-white', 'shadow-lg')
+          thumb.classList.add('border-transparent')
+        }
+      })
+    }
+
+    // Show loading state
+    function showLoader() {
+      const loader = document.getElementById('image-loader')
+      if (loader) loader.classList.remove('hidden')
+    }
+
+    // Hide loading state
+    function hideLoader() {
+      const loader = document.getElementById('image-loader')
+      if (loader) loader.classList.add('hidden')
+    }
+
+    // Update image with smooth transition
+    function updateLightboxImage() {
+      if (isAnimating || imageUrls.length === 0) return
+
+      isAnimating = true
+      const lightboxImage = document.getElementById('lightbox-image')
+      const counter = document.getElementById('image-counter')
+
+      if (!lightboxImage || !counter) {
+        isAnimating = false
+        return
+      }
+
+      // Show loader
+      showLoader()
+
+      // Fade out current image
+      lightboxImage.style.opacity = '0'
+      lightboxImage.style.transform = 'scale(0.95)'
+
+      setTimeout(() => {
+        // Update image source
+        lightboxImage.src = imageUrls[currentImageIndex].full
+        lightboxImage.alt = album.images[currentImageIndex]?.alt || `Photo ${currentImageIndex + 1}`
+        counter.textContent = `${currentImageIndex + 1} / ${imageUrls.length}`
+
+        // Update thumbnails
+        updateThumbnailsActive()
+
+        // Wait for image to load
+        lightboxImage.onload = () => {
+          hideLoader()
+          // Fade in new image
+          lightboxImage.style.opacity = '1'
+          lightboxImage.style.transform = 'scale(1)'
+          isAnimating = false
+        }
+
+        lightboxImage.onerror = () => {
+          hideLoader()
+          isAnimating = false
+        }
+      }, 150)
+    }
+
+    window.openLightbox = function(index) {
+      if (imageUrls.length === 0) return
+
+      currentImageIndex = index
+      const lightbox = document.getElementById('lightbox')
+      const lightboxImage = document.getElementById('lightbox-image')
+      const counter = document.getElementById('image-counter')
+
+      if (lightbox && lightboxImage && counter) {
+        // Create thumbnails if not already created
+        createThumbnailStrip()
+
+        // Set initial image
+        showLoader()
+        lightboxImage.src = imageUrls[currentImageIndex].full
+        lightboxImage.alt = album.images[currentImageIndex]?.alt || `Photo ${currentImageIndex + 1}`
+        counter.textContent = `${currentImageIndex + 1} / ${imageUrls.length}`
+
+        // Show lightbox with animation
+        lightbox.classList.remove('hidden')
+        document.body.style.overflow = 'hidden'
+
+        // Trigger fade in animation
+        setTimeout(() => {
+          lightbox.classList.remove('opacity-0')
+          lightbox.classList.add('opacity-100')
+        }, 10)
+
+        // Hide loader when image loads
+        lightboxImage.onload = () => {
+          hideLoader()
+          updateThumbnailsActive()
+        }
+      }
+    }
+
+    window.closeLightbox = function() {
+      const lightbox = document.getElementById('lightbox')
+      if (lightbox) {
+        // Fade out animation
+        lightbox.classList.remove('opacity-100')
+        lightbox.classList.add('opacity-0')
+
+        setTimeout(() => {
+          lightbox.classList.add('hidden')
+          document.body.style.overflow = 'auto'
+        }, 300)
+      }
+    }
+
+    window.nextImage = function() {
+      if (imageUrls.length === 0 || isAnimating) return
+      currentImageIndex = (currentImageIndex + 1) % imageUrls.length
+      updateLightboxImage()
+    }
+
+    window.prevImage = function() {
+      if (imageUrls.length === 0 || isAnimating) return
+      currentImageIndex = (currentImageIndex - 1 + imageUrls.length) % imageUrls.length
+      updateLightboxImage()
+    }
+
+    window.navigateToImage = function(index) {
+      if (index === currentImageIndex || isAnimating) return
+      currentImageIndex = index
+      updateLightboxImage()
+    }
+
+    // Enhanced keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      const lightbox = document.getElementById('lightbox')
+      if (!lightbox || lightbox.classList.contains('hidden') || isAnimating) return
+
+      switch(e.key) {
+        case 'Escape':
+          e.preventDefault()
+          window.closeLightbox()
+          break
+        case 'ArrowLeft':
+        case 'a':
+        case 'A':
+          e.preventDefault()
+          window.prevImage()
+          break
+        case 'ArrowRight':
+        case 'd':
+        case 'D':
+        case ' ':
+          e.preventDefault()
+          window.nextImage()
+          break
+        case 'Home':
+          e.preventDefault()
+          currentImageIndex = 0
+          updateLightboxImage()
+          break
+        case 'End':
+          e.preventDefault()
+          currentImageIndex = imageUrls.length - 1
+          updateLightboxImage()
+          break
+      }
+    })
+
+    // Touch/swipe support for mobile
+    let startX = 0
+    let startY = 0
+
+    document.addEventListener('touchstart', function(e) {
+      const lightbox = document.getElementById('lightbox')
+      if (!lightbox || lightbox.classList.contains('hidden')) return
+
+      startX = e.touches[0].clientX
+      startY = e.touches[0].clientY
+    })
+
+    document.addEventListener('touchend', function(e) {
+      const lightbox = document.getElementById('lightbox')
+      if (!lightbox || lightbox.classList.contains('hidden') || isAnimating) return
+
+      const endX = e.changedTouches[0].clientX
+      const endY = e.changedTouches[0].clientY
+      const diffX = startX - endX
+      const diffY = startY - endY
+
+      // Only react to horizontal swipes that are longer than vertical swipes
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+        if (diffX > 0) {
+          window.nextImage() // Swipe left = next
+        } else {
+          window.prevImage() // Swipe right = previous
+        }
+      }
+    })
+  </script>
+
+  <style>
+    .album-photo-item {
+      opacity: 0;
+      transform: translateY(40px) scale(0.95);
+      animation: photoSlideUp 0.5s ease-out forwards;
+    }
+
+    @keyframes photoSlideUp {
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
+</Layout>

@@ -1,0 +1,14 @@
+dist/
+node_modules/
+.astro/
+public/
+tools/
+scripts/
+package-lock.json
+*.config.js
+*.config.mjs
+*.config.ts
+venv/
+.venv/
+*.pyc
+__pycache__/

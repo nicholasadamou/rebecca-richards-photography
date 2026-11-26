@@ -1,0 +1,466 @@
+---
+import Layout from '../layouts/Layout.astro'
+import { Heart, Camera, Star, Check, Clock, Image, Users } from 'lucide-astro'
+import PageTransition from '../components/PageTransition.tsx'
+import ScrollAnimation from '../components/ScrollAnimation.tsx'
+import AnimatedContainer from '../components/AnimatedContainer.tsx'
+---
+
+<Layout
+  title="Services & Pricing - Rebecca Richards Photography"
+  description="Wedding photography packages and services in Doylestown, PA. Professional engagement sessions, wedding day coverage, and special event photography."
+  pageType="service"
+>
+  <PageTransition client:load>
+    <!-- Services Hero -->
+    <section class="py-20 bg-white">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+        <AnimatedContainer client:load animation="fadeIn">
+          <h1 class="text-5xl md:text-6xl font-light text-gray-900 mb-6 tracking-wide">
+            Services & Pricing
+          </h1>
+        </AnimatedContainer>
+        
+        <AnimatedContainer client:load animation="slideUp" delay={0.3}>
+          <p class="text-xl md:text-2xl text-gray-600 leading-relaxed font-light">
+            Comprehensive photography packages designed to capture your most important moments
+          </p>
+        </AnimatedContainer>
+      </div>
+    </section>
+
+  <!-- Wedding Packages -->
+  <section class="py-20 bg-gray-50">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation client:load animation="fadeIn" className="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-light text-gray-900 mb-8 tracking-wide">
+          Wedding Photography
+        </h2>
+        <p class="text-lg text-gray-600 font-light max-w-2xl mx-auto">
+          Your wedding day is one of the most important days of your life. Let me capture every
+          precious moment.
+        </p>
+      </ScrollAnimation>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Essential Package -->
+        <ScrollAnimation client:load animation="slideUp" delay={0}>
+          <div class="bg-white rounded-lg shadow-sm p-8 relative hover-lift">
+            <div class="text-center">
+              <Heart size={48} class="text-rose-400 mx-auto mb-6" />
+              <h3 class="text-2xl font-light text-gray-900 mb-4 tracking-wide">Essential</h3>
+            <div class="mb-6">
+              <span class="text-4xl font-light text-gray-900">$2,200</span>
+            </div>
+          </div>
+
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">6 hours of coverage</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">300+ professionally edited photos</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">Online gallery with download</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">Print release included</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">Timeline consultation</span>
+            </li>
+          </ul>
+
+            <a
+              href="/contact"
+              class="w-full block text-center bg-rose-400 hover:bg-rose-500 text-white py-3 rounded-sm transition-colors duration-200 font-light tracking-wide hover-lift"
+            >
+              Book This Package
+            </a>
+          </div>
+        </ScrollAnimation>
+
+        <!-- Complete Package -->
+        <ScrollAnimation client:load animation="slideUp" delay={0.2}>
+          <div class="bg-white rounded-lg shadow-lg p-8 relative border-2 border-rose-400 hover-lift">
+          <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+            <span
+              class="bg-rose-400 text-white px-4 py-2 rounded-sm text-sm font-light tracking-wide"
+            >
+              Most Popular
+            </span>
+          </div>
+
+          <div class="text-center">
+            <Camera size={48} class="text-rose-400 mx-auto mb-6" />
+            <h3 class="text-2xl font-light text-gray-900 mb-4 tracking-wide">Complete</h3>
+            <div class="mb-6">
+              <span class="text-4xl font-light text-gray-900">$3,200</span>
+            </div>
+          </div>
+
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">8 hours of coverage</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">500+ professionally edited photos</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">Complimentary engagement session</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">Online gallery with download</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">Print release included</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">Timeline consultation</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">Bridal preparation coverage</span>
+            </li>
+          </ul>
+
+            <a
+              href="/contact"
+              class="w-full block text-center bg-rose-400 hover:bg-rose-500 text-white py-3 rounded-sm transition-colors duration-200 font-light tracking-wide hover-lift"
+            >
+              Book This Package
+            </a>
+          </div>
+        </ScrollAnimation>
+
+        <!-- Premium Package -->
+        <ScrollAnimation client:load animation="slideUp" delay={0.4}>
+          <div class="bg-white rounded-lg shadow-sm p-8 relative hover-lift">
+          <div class="text-center">
+            <Star size={48} class="text-rose-400 mx-auto mb-6" />
+            <h3 class="text-2xl font-light text-gray-900 mb-4 tracking-wide">Premium</h3>
+            <div class="mb-6">
+              <span class="text-4xl font-light text-gray-900">$4,500</span>
+            </div>
+          </div>
+
+          <ul class="space-y-4 mb-8">
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">10 hours of coverage</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">700+ professionally edited photos</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">Engagement session included</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">Second photographer</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">Online gallery with download</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">Print release included</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">Timeline consultation</span>
+            </li>
+            <li class="flex items-center space-x-3">
+              <Check size={20} class="text-rose-400 flex-shrink-0" />
+              <span class="font-light text-gray-600">USB drive with all images</span>
+            </li>
+          </ul>
+
+            <a
+              href="/contact"
+              class="w-full block text-center bg-rose-400 hover:bg-rose-500 text-white py-3 rounded-sm transition-colors duration-200 font-light tracking-wide hover-lift"
+            >
+              Book This Package
+            </a>
+          </div>
+        </ScrollAnimation>
+      </div>
+    </div>
+  </section>
+
+  <!-- Other Services -->
+  <section class="py-20 bg-white">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <ScrollAnimation client:load animation="fadeIn" className="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-light text-gray-900 mb-8 tracking-wide">
+          Additional Services
+        </h2>
+        <p class="text-lg text-gray-600 font-light max-w-2xl mx-auto">
+          Capture life's special moments beyond your wedding day
+        </p>
+      </ScrollAnimation>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Engagement Sessions -->
+        <div class="bg-gray-50 rounded-lg p-8 text-center">
+          <Heart size={48} class="text-rose-400 mx-auto mb-6" />
+          <h3 class="text-xl font-light text-gray-900 mb-4 tracking-wide">Engagement Sessions</h3>
+          <p class="text-gray-600 font-light mb-6">
+            Intimate sessions to celebrate your engagement and create beautiful save-the-date
+            images.
+          </p>
+          <div class="mb-6">
+            <span class="text-2xl font-light text-gray-900">$450</span>
+          </div>
+          <ul class="space-y-2 text-sm text-gray-600 font-light mb-6">
+            <li>• 1-2 hour session</li>
+            <li>• 50+ edited images</li>
+            <li>• Online gallery</li>
+            <li>• Print release</li>
+          </ul>
+          <a
+            href="/contact"
+            class="inline-block bg-rose-400 hover:bg-rose-500 text-white px-6 py-3 rounded-sm transition-colors duration-200 font-light tracking-wide"
+          >
+            Book Session
+          </a>
+        </div>
+
+        <!-- Special Events -->
+        <div class="bg-gray-50 rounded-lg p-8 text-center">
+          <Star size={48} class="text-rose-400 mx-auto mb-6" />
+          <h3 class="text-xl font-light text-gray-900 mb-4 tracking-wide">Special Events</h3>
+          <p class="text-gray-600 font-light mb-6">
+            Anniversary celebrations, milestone birthdays, and other important family gatherings.
+          </p>
+          <div class="mb-6">
+            <span class="text-2xl font-light text-gray-900">$200/hr</span>
+          </div>
+          <ul class="space-y-2 text-sm text-gray-600 font-light mb-6">
+            <li>• Flexible hourly rate</li>
+            <li>• Professional editing</li>
+            <li>• Online gallery</li>
+            <li>• 2-hour minimum</li>
+          </ul>
+          <a
+            href="/contact"
+            class="inline-block bg-rose-400 hover:bg-rose-500 text-white px-6 py-3 rounded-sm transition-colors duration-200 font-light tracking-wide"
+          >
+            Get Quote
+          </a>
+        </div>
+
+        <!-- Family Portraits -->
+        <div class="bg-gray-50 rounded-lg p-8 text-center">
+          <Users size={48} class="text-rose-400 mx-auto mb-6" />
+          <h3 class="text-xl font-light text-gray-900 mb-4 tracking-wide">Family Portraits</h3>
+          <p class="text-gray-600 font-light mb-6">
+            Beautiful family portraits and couple sessions to preserve your most treasured
+            relationships.
+          </p>
+          <div class="mb-6">
+            <span class="text-2xl font-light text-gray-900">$350</span>
+          </div>
+          <ul class="space-y-2 text-sm text-gray-600 font-light mb-6">
+            <li>• 1 hour session</li>
+            <li>• 30+ edited images</li>
+            <li>• Online gallery</li>
+            <li>• Print release</li>
+          </ul>
+          <a
+            href="/contact"
+            class="inline-block bg-rose-400 hover:bg-rose-500 text-white px-6 py-3 rounded-sm transition-colors duration-200 font-light tracking-wide"
+          >
+            Book Session
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Add-Ons -->
+  <section class="py-20 bg-gray-50">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-light text-gray-900 mb-8 tracking-wide">
+          Available Add-Ons
+        </h2>
+        <p class="text-lg text-gray-600 font-light max-w-2xl mx-auto">
+          Enhance your photography experience with these additional services
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="bg-white rounded-lg p-6 text-center shadow-sm">
+          <Clock size={32} class="text-rose-400 mx-auto mb-4" />
+          <h3 class="font-light text-gray-900 mb-2 tracking-wide">Extended Coverage</h3>
+          <p class="text-sm text-gray-600 font-light mb-3">Additional hour of coverage</p>
+          <span class="text-lg font-light text-gray-900">$250</span>
+        </div>
+
+        <div class="bg-white rounded-lg p-6 text-center shadow-sm">
+          <Users size={32} class="text-rose-400 mx-auto mb-4" />
+          <h3 class="font-light text-gray-900 mb-2 tracking-wide">Second Photographer</h3>
+          <p class="text-sm text-gray-600 font-light mb-3">Capture multiple angles</p>
+          <span class="text-lg font-light text-gray-900">$600</span>
+        </div>
+
+        <div class="bg-white rounded-lg p-6 text-center shadow-sm">
+          <Image size={32} class="text-rose-400 mx-auto mb-4" />
+          <h3 class="font-light text-gray-900 mb-2 tracking-wide">Same-Day Gallery</h3>
+          <p class="text-sm text-gray-600 font-light mb-3">20 edited photos within 24hrs</p>
+          <span class="text-lg font-light text-gray-900">$300</span>
+        </div>
+
+        <div class="bg-white rounded-lg p-6 text-center shadow-sm">
+          <Heart size={32} class="text-rose-400 mx-auto mb-4" />
+          <h3 class="font-light text-gray-900 mb-2 tracking-wide">Travel Fee</h3>
+          <p class="text-sm text-gray-600 font-light mb-3">Beyond 30 miles from Doylestown</p>
+          <span class="text-lg font-light text-gray-900">$0.65/mi</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process -->
+  <section class="py-20 bg-white">
+    <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="text-4xl md:text-5xl font-light text-gray-900 mb-8 tracking-wide">
+          How It Works
+        </h2>
+        <p class="text-lg text-gray-600 font-light">
+          From our first conversation to your final gallery delivery
+        </p>
+      </div>
+
+      <div class="space-y-12">
+        <div class="flex items-start space-x-6">
+          <div
+            class="flex-shrink-0 w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center"
+          >
+            <span class="text-rose-400 font-light text-lg">1</span>
+          </div>
+          <div>
+            <h3 class="text-xl font-light text-gray-900 mb-2 tracking-wide">
+              Initial Consultation
+            </h3>
+            <p class="text-gray-600 font-light leading-relaxed">
+              We'll chat about your vision, timeline, and needs. This can be in person, over video
+              call, or via phone – whatever works best for you.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-6">
+          <div
+            class="flex-shrink-0 w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center"
+          >
+            <span class="text-rose-400 font-light text-lg">2</span>
+          </div>
+          <div>
+            <h3 class="text-xl font-light text-gray-900 mb-2 tracking-wide">Contract & Booking</h3>
+            <p class="text-gray-600 font-light leading-relaxed">
+              Once you decide to move forward, I'll send over a contract and invoice. A 25% retainer
+              secures your date.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-6">
+          <div
+            class="flex-shrink-0 w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center"
+          >
+            <span class="text-rose-400 font-light text-lg">3</span>
+          </div>
+          <div>
+            <h3 class="text-xl font-light text-gray-900 mb-2 tracking-wide">
+              Planning & Preparation
+            </h3>
+            <p class="text-gray-600 font-light leading-relaxed">
+              I'll work with you to create a detailed timeline and discuss your must-have shots. For
+              weddings, this includes venue visits if needed.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-6">
+          <div
+            class="flex-shrink-0 w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center"
+          >
+            <span class="text-rose-400 font-light text-lg">4</span>
+          </div>
+          <div>
+            <h3 class="text-xl font-light text-gray-900 mb-2 tracking-wide">Your Special Day</h3>
+            <p class="text-gray-600 font-light leading-relaxed">
+              I arrive ready to capture every moment, working unobtrusively to document your
+              celebration as it naturally unfolds.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-start space-x-6">
+          <div
+            class="flex-shrink-0 w-12 h-12 bg-rose-100 rounded-full flex items-center justify-center"
+          >
+            <span class="text-rose-400 font-light text-lg">5</span>
+          </div>
+          <div>
+            <h3 class="text-xl font-light text-gray-900 mb-2 tracking-wide">Gallery Delivery</h3>
+            <p class="text-gray-600 font-light leading-relaxed">
+              Your edited photos will be delivered via an online gallery within 4-6 weeks, complete
+              with download and sharing capabilities.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 bg-rose-50">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center">
+        <ScrollAnimation client:load animation="fadeIn">
+          <h2 class="text-4xl md:text-5xl font-light text-gray-900 mb-8 tracking-wide">
+            Ready to Get Started?
+          </h2>
+          <p class="text-lg md:text-xl text-gray-600 leading-relaxed mb-12 font-light">
+            Let's discuss your vision and find the perfect package for your special day.
+          </p>
+        </ScrollAnimation>
+        
+        <ScrollAnimation client:load animation="slideUp" delay={0.2}>
+          <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="/contact"
+              class="bg-rose-400 hover:bg-rose-500 text-white px-8 py-4 rounded-sm transition-colors duration-200 font-light tracking-wide hover-lift"
+            >
+              Book Consultation
+            </a>
+            <a
+              href="/client-albums"
+              class="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-sm hover:border-gray-400 transition-colors duration-200 font-light tracking-wide hover-scale"
+            >
+              View Client Albums
+            </a>
+          </div>
+        </ScrollAnimation>
+      </div>
+    </section>
+  </PageTransition>
+</Layout>

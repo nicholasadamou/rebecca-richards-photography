@@ -1,0 +1,187 @@
+---
+import '../styles/global.css'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import { generateOGImageURL, getPageOGMetadata, type OGMetadata } from '../lib/og-utils'
+import { getHomepageSchema, getBreadcrumbSchema, getImageGallerySchema, getPhotographyEventSchema, type Album } from '../lib/structured-data'
+import { SEARCH_CONSOLE_VERIFICATION, BING_VERIFICATION, FACEBOOK_DOMAIN_VERIFICATION } from '../lib/analytics'
+
+export interface Props {
+  title: string
+  description?: string
+  ogMetadata?: OGMetadata
+  pageType?: 'homepage' | 'album' | 'service' | 'about' | 'contact'
+  customOGData?: {
+    title?: string
+    subtitle?: string
+    albumTitle?: string
+    albumDate?: string
+    albumType?: string
+  }
+  structuredData?: object
+  breadcrumbs?: Array<{ name: string; url: string }>
+  album?: Album
+  albumImages?: string[]
+  canonicalURL?: string
+}
+
+const {
+  title,
+  description = 'Professional wedding photography in Doylestown, PA. Capturing authentic, timeless moments for your special day.',
+  ogMetadata,
+  pageType = 'homepage',
+  customOGData,
+  structuredData,
+  breadcrumbs,
+  album,
+  albumImages,
+  canonicalURL,
+} = Astro.props
+
+// Generate OG metadata if not provided
+const finalOGMetadata = ogMetadata || getPageOGMetadata(pageType, customOGData)
+
+// Get the site URL from environment or use current origin
+const siteURL = import.meta.env.SITE || Astro.url.origin
+
+// Generate OG image URL
+const ogImageURL = generateOGImageURL(finalOGMetadata, siteURL)
+
+// Generate canonical URL
+const finalCanonicalURL = canonicalURL || new URL(Astro.url.pathname, siteURL).toString()
+
+// Generate structured data
+let finalStructuredData = structuredData
+
+if (!finalStructuredData) {
+  if (pageType === 'homepage') {
+    finalStructuredData = getHomepageSchema()
+  } else if (pageType === 'album' && album) {
+    // Combine multiple schemas for album pages
+    const schemas = []
+    
+    if (albumImages && albumImages.length > 0) {
+      schemas.push(getImageGallerySchema(album, albumImages))
+    }
+    
+    schemas.push(getPhotographyEventSchema(album))
+    
+    finalStructuredData = {
+      "@context": "https://schema.org",
+      "@graph": schemas
+    }
+  }
+}
+
+// Generate breadcrumb structured data
+let breadcrumbSchema
+if (breadcrumbs && breadcrumbs.length > 0) {
+  breadcrumbSchema = getBreadcrumbSchema(breadcrumbs)
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href={finalCanonicalURL} />
+    
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.sanity.io" crossorigin />
+    
+    <!-- DNS prefetch for external domains -->
+    <link rel="dns-prefetch" href="//www.google-analytics.com" />
+    <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/icons/favicon-16x16.png" />
+    <link rel="shortcut icon" href="/icons/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/meta/site.webmanifest" />
+    <meta name="theme-color" content="#fb7185" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- SEO Meta Tags -->
+    <meta property="og:title" content={finalOGMetadata.title} />
+    <meta property="og:description" content={finalOGMetadata.description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:site_name" content="Rebecca Richards Photography" />
+    <meta property="og:image" content={ogImageURL} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${finalOGMetadata.title} - Rebecca Richards Photography`} />
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={finalOGMetadata.title} />
+    <meta name="twitter:description" content={finalOGMetadata.description} />
+    <meta name="twitter:image" content={ogImageURL} />
+    <meta name="twitter:image:alt" content={`${finalOGMetadata.title} - Rebecca Richards Photography`} />
+
+    <!-- Structured Data -->
+    {finalStructuredData && (
+      <script type="application/ld+json" set:html={JSON.stringify(finalStructuredData)} />
+    )}
+    
+    {breadcrumbSchema && (
+      <script type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    )}
+    
+    <!-- Search Engine Verification -->
+    <meta name="google-site-verification" content={SEARCH_CONSOLE_VERIFICATION} />
+    <meta name="msvalidate.01" content={BING_VERIFICATION} />
+    <meta name="facebook-domain-verification" content={FACEBOOK_DOMAIN_VERIFICATION} />
+    
+    <!-- Additional Meta Tags -->
+    <meta name="author" content="Rebecca Richards" />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-video-preview:-1, max-image-preview:large, max-snippet:-1" />
+    
+    <!-- Local Business Info -->
+    <meta name="geo.region" content="US-PA" />
+    <meta name="geo.placename" content="Doylestown" />
+    <meta name="geo.position" content="40.3101;-75.1298" />
+    <meta name="ICBM" content="40.3101, -75.1298" />
+    
+    <!-- Article/Content Meta -->
+    {pageType === 'album' && album && (
+      <>
+        <meta property="article:author" content="Rebecca Richards" />
+        <meta property="article:section" content="Photography" />
+        <meta property="article:tag" content={album.albumType} />
+        {album.date && <meta property="article:published_time" content={album.date} />}
+      </>
+    )}
+
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-white text-gray-900 font-light">
+    <Header />
+
+    <main class="flex-grow">
+      <slot />
+    </main>
+
+    <Footer />
+
+
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+    </style>
+  </body>
+</html>
