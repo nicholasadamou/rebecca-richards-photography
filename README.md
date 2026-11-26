@@ -17,6 +17,19 @@ tool.
 
 ## Getting started
 
+With Docker and Compose v2.32 or newer installed:
+
+```sh
+docker compose up --build --watch
+```
+
+Open the [site](http://localhost:4321) and [Sanity Studio](http://localhost:3333).
+Both run locally with live reload; content stays in Sanity. Sign in to Studio
+with a Sanity account that can access the project.
+See [Docker setup](docs/docker.md) for configuration, CORS, and port overrides.
+
+For native development with Node.js 24:
+
 ```sh
 npm ci
 npm run dev
@@ -24,6 +37,7 @@ npm run dev
 
 ## Documentation
 
+- [Docker setup](docs/docker.md): run the site and Studio together locally.
 - [Getting started](docs/getting-started.md): Node.js, local previews, and CMS configuration.
 - [Local verification and development](docs/development.md): builds, scripts, screenshots, and project layout.
 - [Open Graph images](docs/OG-IMAGES.md): social cards and image generation.

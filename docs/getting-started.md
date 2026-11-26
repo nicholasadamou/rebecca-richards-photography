@@ -1,5 +1,14 @@
 # Getting started
 
+To run the site and Sanity Studio together without installing Node.js locally,
+use [Docker Compose](docker.md):
+
+```sh
+docker compose up --build --watch
+```
+
+For native development, follow the steps below.
+
 Use Node.js 24 and npm. The committed `package-lock.json` supplies the dependency
 versions used by GitHub Actions.
 

@@ -12,9 +12,6 @@ export default defineConfig({
   projectId: process.env.SANITY_STUDIO_PROJECT_ID || 'gwf79bj6',
   dataset: process.env.SANITY_STUDIO_DATASET || 'production',
 
-  // Use auth token from environment
-  token: process.env.SANITY_STUDIO_API_TOKEN,
-
   plugins: [structureTool(), visionTool()],
 
   schema: {

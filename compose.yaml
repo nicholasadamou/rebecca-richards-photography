@@ -1,0 +1,73 @@
+services:
+  site:
+    build:
+      context: .
+      target: site
+    init: true
+    ports:
+      - '127.0.0.1:${SITE_PORT:-4321}:4321'
+    environment:
+      PUBLIC_SANITY_PROJECT_ID: ${PUBLIC_SANITY_PROJECT_ID:-gwf79bj6}
+      PUBLIC_SANITY_DATASET: ${PUBLIC_SANITY_DATASET:-production}
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:4321/').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      start_period: 30s
+      retries: 6
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+          initial_sync: true
+          ignore:
+            - sanity-studio/
+            - package.json
+            - package-lock.json
+        - action: rebuild
+          path: package.json
+        - action: rebuild
+          path: package-lock.json
+
+  studio:
+    build:
+      context: .
+      target: studio
+    init: true
+    ports:
+      - '127.0.0.1:${STUDIO_PORT:-3333}:3333'
+    environment:
+      SANITY_STUDIO_PROJECT_ID: ${PUBLIC_SANITY_PROJECT_ID:-gwf79bj6}
+      SANITY_STUDIO_DATASET: ${PUBLIC_SANITY_DATASET:-production}
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:3333/').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      start_period: 30s
+      retries: 6
+    develop:
+      watch:
+        - action: sync
+          path: sanity-studio
+          target: /app
+          initial_sync: true
+          ignore:
+            - package.json
+            - package-lock.json
+        - action: rebuild
+          path: sanity-studio/package.json
+        - action: rebuild
+          path: sanity-studio/package-lock.json

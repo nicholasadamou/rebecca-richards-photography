@@ -1,6 +1,8 @@
 # Development and local verification
 
 Use Node.js 24 and install the committed dependency graph with `npm ci`.
+Alternatively, [Docker Compose](docker.md) supplies the runtime and runs both
+the website and Sanity Studio with live reload.
 
 ## Shared CI build
 
@@ -51,8 +53,8 @@ The legacy CMS diagnostic prints a token prefix, so keep its output private.
 
 ## Images and previews
 
-The build generates cards for the homepage, About Rebecca, services, contact,
-and album fallbacks. See [Open Graph images](OG-IMAGES.md) for templates and
+The build preserves the homepage card and generates cards for About Rebecca,
+services, contact, and album fallbacks. See [Open Graph images](OG-IMAGES.md) for templates and
 [search metadata](SEO-IMPLEMENTATION.md) for page titles, structured data, and
 sitemaps.
 
